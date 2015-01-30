@@ -1,0 +1,137 @@
+doctype html
+html
+  head
+    title= title
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    link(rel='stylesheet', href='/stylesheets/app.css')
+    link(rel='stylesheet', href='/stylesheets/leaflet-draw.css')
+    link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css')
+    link(rel='stylesheet', href='http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css')
+    link(rel='stylesheet', href='//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css')
+    link(rel='stylesheet', href='http://cdn-geoweb.s3.amazonaws.com/esri-leaflet-geocoder/1.0.0-rc.4/esri-leaflet-geocoder.css')
+
+  body
+    body.skin-blue.fixed
+        header.header
+            a.logo.
+                Parcel Map
+            nav.navbar.navbar-static-top
+                a(href='#' data-toggle='offcanvas', role='button').navbar-btn.sidebar-toggle
+                    span.icon-bar
+                    span.icon-bar
+                    span.icon-bar
+                div.navbar-right
+                    ul.nav.navbar-nav
+                        li
+                            button.btn.btn-primary.btn-md.navbar-top-button(data-widget="clearCostAnalysisLayer" title="Clear Cost Analysis Layer")
+                                i.fa.fa-refresh
+                        li
+                            button.btn.btn-primary.btn-md.navbar-top-button(data-widget="clearCostAnalysisLayer" title="Clear Cost Analysis Layer")
+                                i.fa.fa-refresh
+                        li
+                            button.btn.btn-primary.btn-md.navbar-top-button(data-widget="clearCostAnalysisLayer" title="Clear Cost Analysis Layer")
+                                i.fa.fa-refresh
+                        li
+                            button.btn.btn-primary.btn-md.navbar-top-button(data-widget="clearCostAnalysisLayer" title="Clear Cost Analysis Layer")
+                                i.fa.fa-refresh
+        div.wrapper.row-offcanvas.row-offcanvas-left
+            aside.left-side.sidebar-offcanvas
+                section.sidebar
+                    ul.sidebar-menu
+                        li.treeview
+                            a(href='#')
+                                i.fa.fa-globe
+                                span. 
+                                    Session Layers
+                                i.fa.fa-angle-left.pull-right
+                            ul.treeview-menu
+                                li.treeview
+                                    a(href='#' id='sessionNotes').list-group-item.data-item
+                                        i.fa.fa-folder-o
+                                        span.
+                                            Session Notes
+                                        i.fa.fa-angle-left.pull-right
+                                li.treeview
+                                    a(href='#' id='sessionParcels').list-group-item.data-item
+                                        i.fa.fa-folder-o
+                                        span.
+                                            Session Parcels
+                                        i.fa.fa-angle-left.pull-right
+                    ul.sidebar-menu
+                        li.treeview
+                            a(href='#')
+                                i.fa.fa-globe
+                                span. 
+                                    Parcel Data
+                                i.fa.fa-angle-left.pull-right
+                            ul.treeview-menu
+                                li.treeview
+                                    a(href='#' id='definedAreaParcels').list-group-item.data-item
+                                        i.fa.fa-square-o
+                                        span.
+                                            Defined Area
+                                        i.fa.fa-check.pull-right
+                                li.treeview
+                                    a(href='#' id='visibleAreaParcels').list-group-item.data-item
+                                        i.fa.fa-square-o
+                                        span.
+                                            Visible Area
+                                        i.fa.fa-check.pull-right
+                    ul.sidebar-menu
+                        li.treeview
+                            a(href='#')
+                                i.fa.fa-globe
+                                span. 
+                                    Base Data
+                                i.fa.fa-angle-left.pull-right
+                            ul.treeview-menu
+                                li.treeview
+                                    a(href='#' id='plss').list-group-item.data-item
+                                        i.fa.fa-square-o
+                                        span.
+                                            PLSS
+                                        i.fa.fa-check.pull-right
+                    ul.sidebar-menu
+                        li.treeview
+                            a(href='#')
+                                i.fa.fa-globe
+                                span. 
+                                    Settings
+                                i.fa.fa-angle-left.pull-right
+                            ul.treeview-menu
+                                li.treeview
+                                    div.row
+                                        div.col-lg-12
+                                            div.form-group
+                                                div.filterSelect
+                                                    Parcel Treshold
+                                                select(id='parcelThreshold' name='parcelThreshold').form-control.filter
+                                                    option(value='100') 100
+                                                    option(value='500') 500
+                                                    option(value='1000') 1000
+                                                    option(value='2000') 2000
+                                                    option(value='2000') 5000
+            aside.right-side
+                section.content
+                    div.row
+                        #map.leafletMap
+
+    script(src='http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js')
+    script(src='https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js')
+    script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js')
+    script(src='javascripts/app.js')
+    //Leaflet Plugins
+    //Leaflet Vector
+    script(src='javascripts/lvector.js')
+
+    //Esri Leaflet Core
+    //script(src='http://cdn-geoweb.s3.amazonaws.com/esri-leaflet/0.0.1-beta.5/esri-leaflet-core.js')
+    script(src='http://cdn-geoweb.s3.amazonaws.com/esri-leaflet/1.0.0-rc.5/esri-leaflet.js')
+    //Esri Leaflet Geocoder
+    script(src='http://cdn-geoweb.s3.amazonaws.com/esri-leaflet-geocoder/1.0.0-rc.4/esri-leaflet-geocoder.js')
+    //Maki Markers
+    script(src='javascripts/leaflet-makimarkers.js')
+    //Leaflet Draw
+    script(src='javascripts/leaflet-draw.js')
+    //Main JS
+    script(src='javascripts/AdminLTE/admin.js')
