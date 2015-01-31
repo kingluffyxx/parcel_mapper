@@ -7,6 +7,7 @@ $( document ).ready(function() {
 	map.on('load', function(e) {
     	init();
 	});
+
 	map.fitBounds([
 		[40.521, -104.416],
 		[39.892, -105.179]
@@ -21,6 +22,10 @@ $( document ).ready(function() {
 })
 
 function init(){
+  $("#addToSession").click(function() {
+    console.log("IN");
+  });
+
     $('.data-item').on('click', function(){
     function getHTML(id) {
       var oldHtml = {
@@ -63,6 +68,7 @@ function init(){
     $("#" + this.id).html(newHtml);  
     //orderLayers();
   });
+
 	var parcelStyle = {
 			'fillColor': '#A4A4A4',
 			'weight': 2.5,
@@ -74,6 +80,7 @@ function init(){
     // Add fuse search control
     
 	var searchAddress = new L.esri.Geocoding.Controls.Geosearch().addTo(map);
+  //var searchAddress = new L.esri.Controls.Geosearch().addTo(map);
 	var results = new L.LayerGroup().addTo(map);
 		searchAddress.on('results', function(data){
     		results.clearLayers();
@@ -88,11 +95,20 @@ function init(){
 			position: "back",
 	        onEachFeature: function (feature, layer) {
 	        	layer.cartodb_id=feature.properties.cartodb_id;
-			    layer.bindPopup("<div style='font-size:16px;'><b>" + feature.properties.name + "</b><br>Parcel Number: " + feature.properties.parcel + "<br>Account Number: " + feature.properties.accountno + "</div>");
-				//layer.on({click: highlightFeature});
+
+           layer.bindPopup('<div><h4>Owner: ' + feature.properties.name + ' </h4><table class="condensed-table"><tr><th>Parcel # </th><td>\
+           &nbsp'+ feature.properties.parcel +' </td></tr><tr><th>Account Type</th><td> &nbsp'+ feature.properties.accounttyp +'</td></tr><tr><th>Account Number</th><td>\
+           &nbsp'+ feature.properties.accountno +'</td></tr><th>Location</th><td>\
+           &nbsp Sec '+ feature.properties.sec +' &nbsp TS '+ feature.properties.ts +' </td></tr></table></div><div class="popup-content">  \
+           <a class="btn " href="#" id="link" value="' + feature.properties.parcel +'"><i class="fa fa-bolt fa-2x "></i></a>\
+           <a class="btn " href="#" id="prChart" value="' + feature.properties.parcel +'"><i class="fa fa-plus-square fa-2x "></i></a>\
+           <a class="btn " href="#" id="uploadFile" value="' + feature.properties.parcel +'"><i class="fa fa-cloud-upload fa-2x "></i></a>\
+           <a class="btn " href="#" id="openFile" value="' + feature.properties.parcel +'"><i class="fa fa-folder-open fa-2x "></i></a></br></div>')
+          //layer.on({click: highlightFeature});
+
 			}
 	    }).addTo(map);
-
+    
   	parcelsVisibleArea = new lvector.CartoDB({
     user: "admin2",
     table: "sei_weld_parcels",
@@ -109,17 +125,16 @@ function init(){
             color: "#0000FF"
         } 
     },
-      popupTemplate: '<div class="iw-content"><h4>Owner: {name}</h4><table class="condensed-table"><tr><th>Parcel #</th><td> &nbsp {parcel}</td></tr><tr><th>Account Type</th><td> &nbsp {accounttyp}</td></tr><tr><th>Account Number</th><td> &nbsp {accountno}</td></tr><th>Location</th><td> &nbsp {sec} &nbsp {ts}</td></tr></table></div>',
+      popupTemplate: '<div class="iw-content"><h4>Owner: {name}</h4><table class="condensed-table"><tr><th>Parcel #</th><td> &nbsp {parcel}</td></tr><tr><th>Account Type</th><td> &nbsp {accounttyp}</td></tr><tr><th>Account Number</th><td> &nbsp {accountno}</td></tr><th>Location</th><td> &nbspSec {sec} &nbsp TS {ts}</td></tr></table></div>',
       singlePopup: true
     });
-    /*Map Services
+    /*Map Services*/
     var plssLayer = new L.esri.dynamicMapLayer('http://www.geocommunicator.gov/ArcGIS/rest/services/PLSS/MapServer', {
       opacity: 0.45,
       layers: [1,2,9,10,11,12],
       useCORS: true,
       position: "back"
     });
-    */
   	//pullCartoDBData("POST","http://admin2.cartodb.com/api/v2/sql?format=GeoJSON&q=SELECT * FROM sei_weld_parcels &api_key=f5019774d855a7103161059c8f1a73972442dd70","json","data",parcels,'parcels');
   	/*Draw Control to Define Well & Permit Area*/
 	var drawnItems = new L.FeatureGroup();
@@ -209,5 +224,9 @@ function init(){
           }
       });
     }
+
+  $("#addToSession").click(function() {
+    console.log("IN");
+  });
 
 }
