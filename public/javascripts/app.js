@@ -115,7 +115,6 @@ function init(){
     fields: "cartodb_id,parcel,name,legal,accountno,accounttyp,sec,ts,st_simplify(the_geom,0.000008) the_geom",
     key: "f5019774d855a7103161059c8f1a73972442dd70",
     scaleRange: [15, 20],
-    map: map,
     symbology: {
         type: "single", // Defines the symbology as a single type of representation for all features
         vectorOptions: { // Leaflet Path options for all features
