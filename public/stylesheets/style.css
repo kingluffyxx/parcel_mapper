@@ -35,10 +35,7 @@ body
     box-sizing: border-box !important; /* Opera/IE 8+ */
 }
 
-.filterSelect{
-	margin-left:5px;
-	margin-right:5px;
-}
+
 .filterControls{
 	text-align: center;
 }
@@ -51,4 +48,30 @@ body
 }
 .popup-content{
     padding-top:5px;
+}
+.modalFilter{
+    margin-top:5px;
+    margin-bottom:5px;
+}
+.top-button{
+    margin-top:10px;
+    margin-left:10px;
+}
+.top-select{
+    margin-top:10px;
+}
+.navbar-top{
+    padding-right: 10px;
+}
+.leaflet-left{
+   
+}
+.menu-button{
+    margin-top: 5px;
+    margin-bottom: 5px !important;
+    margin-left: 5px;
+    color: white !important;
+}
+.menu-toggle{
+    width: 92%;
 }

@@ -5,17 +5,17 @@ html
     link(rel='stylesheet', href='/stylesheets/style.css')
     link(rel='stylesheet', href='/stylesheets/app.css')
     link(rel='stylesheet', href='/stylesheets/leaflet-draw.css')
+    link(rel='stylesheet', href='/stylesheets/leaflet-geocoder.css')
     link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css')
     link(rel='stylesheet', href='http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css')
     link(rel='stylesheet', href='//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css')
-    link(rel='stylesheet', href='http://cdn-geoweb.s3.amazonaws.com/esri-leaflet-geocoder/1.0.0-rc.4/esri-leaflet-geocoder.css')
 
   body
     body.skin-blue.fixed
         header.header
             a.logo.
                 Parcel Map
-            nav.navbar.navbar-static-top
+            nav.navbar.navbar-static-top.navbar-top
                 a(href='#' data-toggle='offcanvas', role='button').navbar-btn.sidebar-toggle
                     span.icon-bar
                     span.icon-bar
@@ -23,16 +23,10 @@ html
                 div.navbar-right
                     ul.nav.navbar-nav
                         li
-                            button.btn.btn-primary.btn-md.navbar-top-button(id="addToSession" title="Save Parcel To Session")
-                                i.fa.fa-plus-square
+                            button(id="spatialQuery" data-widget="spatialQuery" title="Spatial Query").btn.btn-primary.btn-md.top-button
+                                i.fa.fa-random
                         li
-                            button.btn.btn-primary.btn-md.navbar-top-button(data-widget="clearCostAnalysisLayer" title="Clear Cost Analysis Layer")
-                                i.fa.fa-refresh
-                        li
-                            button.btn.btn-primary.btn-md.navbar-top-button(data-widget="clearCostAnalysisLayer" title="Clear Cost Analysis Layer")
-                                i.fa.fa-refresh
-                        li
-                            button.btn.btn-primary.btn-md.navbar-top-button(data-widget="clearCostAnalysisLayer" title="Clear Cost Analysis Layer")
+                            button(data-widget="refreshMap" title="Refresh Map").btn.btn-primary.btn-md.top-button
                                 i.fa.fa-refresh
         div.wrapper.row-offcanvas.row-offcanvas-left
             aside.left-side.sidebar-offcanvas
@@ -46,17 +40,30 @@ html
                                 i.fa.fa-angle-left.pull-right
                             ul.treeview-menu
                                 li.treeview
-                                    a(href='#' id='sessionNotes').list-group-item.data-item
-                                        i.fa.fa-folder-o
+                                    a(href='#' id='sessionParcelsNotSaved').list-group-item.data-item.menu-toggle
+                                        i.fa.fa-asterisk
                                         span.
-                                            Session Notes
-                                        i.fa.fa-angle-left.pull-right
+                                            Unsaved Session Parcels
+                                        i.fa.fa-plus-square.pull-right
                                 li.treeview
-                                    a(href='#' id='sessionParcels').list-group-item.data-item
-                                        i.fa.fa-folder-o
+                                    a(href='#' id='sessionKML').list-group-item.data-item.menu-toggle
+                                        i.fa.fa-upload
                                         span.
-                                            Session Parcels
-                                        i.fa.fa-angle-left.pull-right
+                                            Session KML Data
+                                        i.fa.fa-plus-square.pull-right
+                                li.treeview
+                                    a(href='#' id='sessionParcelsSaved').list-group-item.data-item.menu-toggle
+                                        i.fa.fa-upload
+                                        span.
+                                            Loaded Session Parcels
+                                        i.fa.fa-plus-square.pull-right
+                                    ul.nav
+                                        button.btn.btn-primary.btn-xs.menu-button(data-widget="saveSession" title="Save Session")
+                                            i.fa.fa-save
+                                        button.btn.btn-primary.btn-xs.menu-button(data-widget="tableSession" title="Show Table View")
+                                            i.fa.fa-list
+                                        a(href="#").btn.btn-primary.btn-xs.menu-button.exportSession
+                                                i.fa.fa-download       
                     ul.sidebar-menu
                         li.treeview
                             a(href='#')
@@ -66,17 +73,17 @@ html
                                 i.fa.fa-angle-left.pull-right
                             ul.treeview-menu
                                 li.treeview
-                                    a(href='#' id='definedAreaParcels').list-group-item.data-item
+                                    a(href='#' id='definedAreaParcels').list-group-item.data-item.main-item.menu-toggle
                                         i.fa.fa-square-o
                                         span.
                                             Defined Area
                                         i.fa.fa-check.pull-right
-                                li.treeview
-                                    a(href='#' id='visibleAreaParcels').list-group-item.data-item
-                                        i.fa.fa-square-o
-                                        span.
-                                            Visible Area
-                                        i.fa.fa-check.pull-right
+                                    ul.nav
+                                        button.btn.btn-primary.btn-xs.menu-button(data-widget="tableDefined" title="Run Spatial Query")
+                                            i.fa.fa-list
+                                        a(href="#").btn.btn-primary.btn-xs.menu-button.exportDefined
+                                            i.fa.fa-download         
+
                     ul.sidebar-menu
                         li.treeview
                             a(href='#')
@@ -86,11 +93,24 @@ html
                                 i.fa.fa-angle-left.pull-right
                             ul.treeview-menu
                                 li.treeview
-                                    a(href='#' id='plss').list-group-item.data-item
+                                    a(href='#' id='plss').list-group-item.data-item.menu-toggle
                                         i.fa.fa-square-o
                                         span.
                                             PLSS
                                         i.fa.fa-check.pull-right
+                                li.treeview
+                                    a(href='#' id='osmBuildings').list-group-item.data-item.menu-toggle
+                                        i.fa.fa-square-o
+                                        span.
+                                            3D Buildings
+                                        i.fa.fa-check.pull-right
+                                li.treeview
+                                    a(href='#' id='imagery').list-group-item.data-item.menu-toggle
+                                        i.fa.fa-square-o
+                                        span.
+                                            Imagery
+                                        i.fa.fa-check.pull-right
+                                        
                     ul.sidebar-menu
                         li.treeview
                             a(href='#')
@@ -100,37 +120,94 @@ html
                                 i.fa.fa-angle-left.pull-right
                             ul.treeview-menu
                                 li.treeview
-                                    div.row
-                                        div.col-lg-12
-                                            div.form-group
-                                                div.filterSelect
-                                                    Parcel Treshold
-                                                select(id='parcelThreshold' name='parcelThreshold').form-control.filter
-                                                    option(value='100') 100
-                                                    option(value='500') 500
-                                                    option(value='1000') 1000
-                                                    option(value='2000') 2000
-                                                    option(value='2000') 5000
+                                    a(href='#').list-group-item.menu-toggle
+                                        i.fa.fa-bookmark
+                                        span.
+                                            Parcel Query Limit
+                                        select(id='parcelThreshold' name='parcelThreshold').form-control.filter
+                                            option(value='100') 100
+                                            option(value='500') 500
+                                            option(value='1000') 1000
+                                            option(value='2000') 2000
+                                            option(value='5000') 5000
+                                 li.treeview
+                                    a(href='#').list-group-item.menu-toggle
+                                        i.fa.fa-bookmark
+                                        span.
+                                            Load A Session
+                                        select(id='savedSessions' name='savedSessions').form-control.filter
+                                    button.btn.btn-primary.btn-xs.menu-button(data-widget="loadSession" title="Load Session Data")
+                                        i.fa.fa-arrow-up
             aside.right-side
                 section.content
                     div.row
                         #map.leafletMap
+            #spatialQueryModal.modal.fade(tabindex="-1" role="dialog" )
+                #dialog.modal-dialog
+                    #content.modal-content
+                        #modalHeader.modal-header
+                            h4.modal-title Spatial Query
+                        #modalBody.modal-body
+                            #modalData Select Parcels 
+                                select(id='selectionMethod' name='selectionMethod').form-control.filter.modalFilter
+                                    option(value='Within') Within
+                                    option(value='Not Within') Not Within
+                                select(id='selectionData' name='selectionData').form-control.filter.modalFilter
+                                    option(value='KML') KML Layer
+                                button.btn.btn-primary(data-widget="runSpatialQuery" title="Run Spatial Query") Run Query
+            #showResults.modal.fade(tabindex="-1" role="dialog" )
+                #dialog.modal-dialog
+                    #content.modal-content
+                        #modalHeader.modal-header
+                            h4.modal-title Defined Area Results
+                        #modalBody.modal-body
+                            table(id="definedResultsTable" cellspacing="0" width="100%").table.table-striped.table-bordered
+                                thead
+                                    tr
+                                        th Owner Name
+                                        th Parcel PIN
+                                        th Parcel Situs
+
+                                tbody(id='definedResults').definedResults
+            #notes.modal.fade(tabindex="-1" role="dialog" )
+                #dialog.modal-dialog
+                    #content.modal-content
+                        #modalHeader.modal-header
+                            h4.modal-title Edit Notes
+                        #modalBody.modal-body
+                            textarea(id="notesTextArea" rows="3").form-control.modalFilter
+                            button.btn.btn-primary(data-widget="saveNotes" title="Save") Save 
+                            #editID ID     
+            #saveSessionModal.modal.fade(tabindex="-1" role="dialog" )
+                #dialog.modal-dialog
+                    #content.modal-content
+                        #modalHeader.modal-header
+                            h4.modal-title Save Session
+                        #modalBody.modal-body
+                            #form.form-group
+                                label(for="sessionName") Session Name
+                                input(id="sessionName" placeholder="Enter Session Name").form-control.modalFilter.session-select
+                                button.btn.btn-primary(data-widget="saveToSessionButton" title="Save") Save 
 
     script(src='http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js')
+    script(src='javascripts/leaflet-geocoder.js')
     script(src='https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js')
     script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js')
+    script(src='https://cdn.datatables.net/1.10.4/js/jquery.dataTables.min.js')
+    script(src='https://cdn.datatables.net/plug-ins/3cfcc339e89/integration/bootstrap/3/dataTables.bootstrap.js')
     script(src='javascripts/app.js')
     //Leaflet Plugins
+    //OSM
+    script(src='javascripts/leaflet-osmbuildings.js')
     //Leaflet Vector
     script(src='javascripts/lvector.js')
-
+    //Leaflet File Loader
+    script(src='javascripts/leaflet.filelayer.js')
+    //Leaflet Omnivore
+    script(src='javascripts/leaflet-omnivore.min.js')
     //Esri Leaflet Core
     //script(src='http://cdn-geoweb.s3.amazonaws.com/esri-leaflet/0.0.1-beta.5/esri-leaflet-core.js')
     script(src='http://cdn-geoweb.s3.amazonaws.com/esri-leaflet/1.0.0-rc.5/esri-leaflet.js')
-    //Esri Leaflet Geocoder
-    script(src='http://cdn-geoweb.s3.amazonaws.com/esri-leaflet-geocoder/1.0.0-rc.4/esri-leaflet-geocoder.js')
-    //script(src='http://cdn-geoweb.s3.amazonaws.com/esri-leaflet-geocoder/0.0.1-beta.3/esri-leaflet-geocoder.js')
-    
     //Maki Markers
     script(src='javascripts/leaflet-makimarkers.js')
     //Leaflet Draw

@@ -117,9 +117,8 @@ lvector.Layer = L.Class.extend({
         this.options.map.on("moveend", this._idleListener, this)
     },
     _checkLayerVisibility: function() {
-	    if(this.options.map !== null){
-            var a = this.options.visibleAtScale,
-                b = this.options.map.getZoom(),
+	        var a = this.options.visibleAtScale,
+	            b = this.options.map.getZoom(),
 	            d = this.options.scaleRange;
 	        this.options.visibleAtScale = b >= d[0] && b <= d[1];
 	        if (a !== this.options.visibleAtScale) this[this.options.visibleAtScale ? "_showVectors" : "_hideVectors"]();
@@ -131,7 +130,6 @@ lvector.Layer = L.Class.extend({
 	                e._getFeatures()
 	            }, this.options.autoUpdateInterval)
 	        }
-        }
     },
     _setPopupContent: function(a) {
         var b = a.popupContent,
@@ -303,7 +301,6 @@ lvector.Layer = L.Class.extend({
     }
 });
 lvector.GeoJSONLayer = lvector.Layer.extend({
-
     _geoJsonGeometryToLeaflet: function(a, b) {
         var d, e;
         switch (a.type) {
@@ -638,7 +635,6 @@ lvector.CartoDB = lvector.GeoJSONLayer.extend({
     },
     _requiredParams: ["user", "table"],
     _getFeatures: function() {
-        if(this.options.map !== null){
         var a = this.options.where || "";
         if (!this.options.showAll)
             for (var b = this.options.map.getBounds(), d = b.getSouthWest(), b = b.getNorthEast(), e = this.options.table.split(",").length, c = 0; c < e; c++) a += (a.length ? " AND " : "") + (e > 1 ? this.options.table.split(",")[c].split(".")[0] +
@@ -647,7 +643,6 @@ lvector.CartoDB = lvector.GeoJSONLayer.extend({
         a = a.length ? " " + a : "";
         a = "http://" + this.options.user + ".cartodb.com/api/v" + this.options.version + "/sql?q=" + encodeURIComponent("SELECT " + this.options.fields + " FROM " + this.options.table + (a.length ? " WHERE " + a : "")) + "&api_key=" + this.options.key + "&format=geojson&callback=" + this._globalPointer + "._processFeatures";
         this._makeJsonpRequest(a)
-        }
     }
 });
 lvector.PRWSF = lvector.GeoJSONLayer.extend({
